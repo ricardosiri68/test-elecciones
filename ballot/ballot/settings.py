@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNINb: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6ltvz#(p$42gp01#60)v&v1qc+uxa4yudvs+0b7_=0iws&)2d8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'ballot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/data/db.sqlite3',
     }
 }
 

@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  ballot.app:
+    build:
+      context: .
+    entrypoint: /app/init.sh
+    volumes:
+
+      - type: bind
+        source: ./ballot
+        target: /app/ballot/
+
+      - type: volume
+        source: ballot-data
+        target: /data
+
+    ports:
+      - "8080:80"
+    networks:
+      - ballot-ntw
+
+volumes:
+  ballot-data:
+
+networks:
+  # The presence of these objects is sufficient to define them
+  ballot-ntw: {}
