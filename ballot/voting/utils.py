@@ -21,7 +21,6 @@ def has_voted_percentage():
 
 
 def make_vote(voter: Voter, vote: Vote):
-
     if has_voted(voter.dni) is True:
         raise AlreadyVotedError(f'The voter {voter.dni}, already has voted')
 
@@ -31,14 +30,12 @@ def make_vote(voter: Voter, vote: Vote):
 
 
 def close_election(election: Election):
-
     election.is_open = False
     make_results(election)
     election.save()
 
 
 def publish_results(election: Election):
-
     if election.is_open:
         raise PublishOpenElectionError('You need close the election to publish the results.')
 
@@ -47,7 +44,6 @@ def publish_results(election: Election):
 
 
 def make_results(election: Election):
-
     total = Vote.objects.count()
     total_afirmative = Vote.objects.filter(election=election, vote_type=VoteType.AFIRMATIVE).count()
 
