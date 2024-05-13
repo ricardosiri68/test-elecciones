@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -33,3 +34,32 @@ class PoliticalParty(models.Model):
 
         verbose_name = 'Political Party'
         verbose_name_plural = 'Political Parties'
+
+
+class Election(models.Model):
+
+    is_open = models.BooleanField(default=True)
+    published = models.BooleanField(default=True)
+    date = models.DateField()
+
+
+class VoteType(models.TextChoices):
+
+    AFIRMATIVE = 'A', _('Afirmative')
+    BLANK = 'B', _('Blank')
+    NULL = 'N', _('Null')
+
+
+class Restult(models.Model):
+
+    percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    vote_type = models.CharField(max_length=1, choices=VoteType.choices, default=VoteType.NULL)
+    votes = models.IntegerField()
+    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT, null=True)
+
+
+class Vote(models.Model):
+
+    vote_type = models.CharField(max_length=1, choices=VoteType.choices, default=VoteType.NULL)
+    election = models.ForeignKey('Election', on_delete=models.PROTECT)
+    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT)
