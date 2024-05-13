@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Voter, PoliticalParty
+from .models import Voter, PoliticalParty, Election
 
 
 @admin.register(Voter)
@@ -14,3 +14,9 @@ class VoterAdmin(admin.ModelAdmin):
 class PoliticalPartyAdmin(admin.ModelAdmin):
     list_display = ('party_number', 'party_name', 'president', 'vice_president', 'slogan')
     search_fields = ('party_number', 'party_name')
+
+
+@admin.register(Election)
+class ElectionAdmin(admin.ModelAdmin):
+    list_display = ('date', 'is_open', 'published')
+    search_fields = ('date', 'is_open')

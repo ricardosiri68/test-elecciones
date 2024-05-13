@@ -50,10 +50,11 @@ class VoteType(models.TextChoices):
     NULL = 'N', _('Null')
 
 
-class Restult(models.Model):
+class Result(models.Model):
 
-    percentage = models.DecimalField(max_digits=5, decimal_places=2)
     vote_type = models.CharField(max_length=1, choices=VoteType.choices, default=VoteType.NULL)
+    election = models.ForeignKey('Election', on_delete=models.PROTECT, related_name='results')
+    percentage = models.DecimalField(max_digits=5, decimal_places=2)
     votes = models.IntegerField()
     party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT, null=True)
 
@@ -62,4 +63,4 @@ class Vote(models.Model):
 
     vote_type = models.CharField(max_length=1, choices=VoteType.choices, default=VoteType.NULL)
     election = models.ForeignKey('Election', on_delete=models.PROTECT)
-    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT)
+    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT, null=True)
