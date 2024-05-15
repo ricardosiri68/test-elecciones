@@ -1,10 +1,10 @@
 from decimal import Decimal
 import pytest
 
-from voting.utils import close_election, has_voted, has_voted_percentage, make_vote, publish_results
-from .factories import VoterFactory, ElectionFactory, make_parties
-from voting.models import VoteType, Vote
 from voting.exceptions import AlreadyVotedError, PublishOpenElectionError
+from voting.models import VoteType, Vote
+from voting.tests.factories import VoterFactory, ElectionFactory, make_parties
+from voting.utils import close_election, has_voted, has_voted_percentage, make_vote, publish_results
 
 
 # has_voted tests
@@ -89,21 +89,11 @@ def test_close_election():
     oficialism, opposition = make_parties()
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=oficialism,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=oficialism)
     )
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=opposition,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=opposition)
     )
 
     close_election(election)
@@ -124,30 +114,15 @@ def test_results_of_closed_election():
     make_vote(VoterFactory(), Vote(election=election, vote_type=VoteType.BLANK))
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=oficialism,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=oficialism)
     )
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=oficialism,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=oficialism)
     )
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=opposition,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=opposition)
     )
 
     close_election(election)
@@ -174,21 +149,11 @@ def test_make_election_result_public():
     oficialism, opposition = make_parties()
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=oficialism,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=oficialism)
     )
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=opposition,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=opposition)
     )
 
     close_election(election)
@@ -203,21 +168,11 @@ def test_make_open_election_result_public_fails():
     oficialism, opposition = make_parties()
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=oficialism,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=oficialism)
     )
 
     make_vote(
-        VoterFactory(),
-        Vote(
-            election=election,
-            vote_type=VoteType.AFIRMATIVE,
-            party=opposition,
-        ),
+        VoterFactory(), Vote(election=election, vote_type=VoteType.AFIRMATIVE, party=opposition)
     )
 
     with pytest.raises(PublishOpenElectionError):

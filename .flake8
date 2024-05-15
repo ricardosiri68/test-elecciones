@@ -2,4 +2,4 @@
 exclude =
   ballot/settings
   **/migrations/*
-max_line_length = 100
+max_line_length = 80

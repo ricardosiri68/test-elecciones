@@ -1,8 +1,9 @@
-from .models import Voter, Vote, VoteType, Election, Result, PoliticalParty
-from .exceptions import AlreadyVotedError, PublishOpenElectionError
+from voting.exceptions import AlreadyVotedError, PublishOpenElectionError
+from voting.models import Election, PoliticalParty, Result, Vote, VoteType, Voter
 
 
 def has_voted(dni):
+    """With a given dni check if the voter has already voted."""
     try:
         voter = Voter.objects.get(dni=dni)
         return voter.has_voted
@@ -11,16 +12,18 @@ def has_voted(dni):
 
 
 def has_voted_percentage():
+    """Return the voted percentage."""
     total_voters = Voter.objects.count()
     voted_voters = Voter.objects.filter(has_voted=True).count()
 
     if total_voters == 0:
         return 0
 
-    return (voted_voters / total_voters) * 100
+    return make_percentage(total_voters, voted_voters)
 
 
 def make_vote(voter: Voter, vote: Vote):
+    """Check the conditions of the voter and add a new vote if there match."""
     if has_voted(voter.dni) is True:
         raise AlreadyVotedError(f'The voter {voter.dni}, already has voted')
 
@@ -30,12 +33,14 @@ def make_vote(voter: Voter, vote: Vote):
 
 
 def close_election(election: Election):
-    election.is_open = False
+    """Generate the results of the election and change it to closed state."""
     make_results(election)
+    election.is_open = False
     election.save()
 
 
 def publish_results(election: Election):
+    """Change the state of the election to published if it's closed."""
     if election.is_open:
         raise PublishOpenElectionError('You need close the election to publish the results.')
 
@@ -44,17 +49,19 @@ def publish_results(election: Election):
 
 
 def make_results(election: Election):
+    """Generate the result of the elections."""
     total = Vote.objects.count()
     total_afirmative = Vote.objects.filter(election=election, vote_type=VoteType.AFIRMATIVE).count()
 
-    make_non_afirmative_result(election, VoteType.BLANK, total)
-    make_non_afirmative_result(election, VoteType.NULL, total)
+    make_non_affirmative_result(election, VoteType.BLANK, total)
+    make_non_affirmative_result(election, VoteType.NULL, total)
 
     for party in PoliticalParty.objects.all():
-        make_afirmative_result(election, party, total_afirmative)
+        make_affirmative_result(election, party, total_afirmative)
 
 
-def make_non_afirmative_result(election: Election, vote_type: VoteType, total: int):
+def make_non_affirmative_result(election: Election, vote_type: VoteType, total: int):
+    """Generate the non afirmative result objects only."""
     non_afirmative_count = Vote.objects.filter(election=election, vote_type=vote_type).count()
 
     Result.objects.create(
@@ -65,7 +72,8 @@ def make_non_afirmative_result(election: Election, vote_type: VoteType, total: i
     )
 
 
-def make_afirmative_result(election: Election, party: PoliticalParty, total: int):
+def make_affirmative_result(election: Election, party: PoliticalParty, total: int):
+    """Generate the affirmative resule objects only."""
     party_votes = Vote.objects.filter(
         election=election, vote_type=VoteType.AFIRMATIVE, party=party
     ).count()
@@ -79,4 +87,5 @@ def make_afirmative_result(election: Election, party: PoliticalParty, total: int
 
 
 def make_percentage(total, current):
+    """Calculate a percentange."""
     return (current / total) * 100
