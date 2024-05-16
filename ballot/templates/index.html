@@ -1,0 +1,38 @@
+{% load static %}
+<html>
+    <head>
+        <title>django-chartjs line chart demo</title>
+        <!--[if lte IE 8]>
+            <script src="{% static 'js/excanvas.js' %}"></script>
+        <![endif]-->
+        <style>
+        .election_chart {
+            width: 600;
+            height: 400;
+        }
+        </style>
+    </head>
+    <body>
+        {% if election %}
+        <h1>Resultados electorales 2023:</h1>
+        <div class="election_chart">
+            <canvas id="election_chart" width="500" height="400"></canvas>
+        </div>
+        {% else %}
+        <h1>Los resultados se están procesando</h1>
+        {% endif %}
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        <script type="text/javascript">
+            $.get('{% url "results_json" %}', function(data) {
+                var ctx = $("#election_chart").get(0).getContext("2d");
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: data,
+                    options: { width: 600, height: 400 }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from voting import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('resultados/', views.index, name='index'),
+    path('resultados.json/', views.results_json, name='results_json'),
 ]

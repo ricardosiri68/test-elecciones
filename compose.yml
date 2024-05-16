@@ -4,7 +4,7 @@ services:
   ballot.app:
     build:
       context: .
-    entrypoint: /app/init.sh
+    entrypoint: /app/scripts/init.ballot.sh
     volumes:
 
       - type: bind
