@@ -3,7 +3,6 @@ from django.db import models
 
 
 class Voter(models.Model):
-    """The persón"""
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -57,7 +56,7 @@ class Result(models.Model):
     election = models.ForeignKey('Election', on_delete=models.PROTECT, related_name='results')
     percentage = models.DecimalField(max_digits=5, decimal_places=2)
     votes = models.IntegerField()
-    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT, null=True)
+    party = models.ForeignKey('PoliticalParty', on_delete=models.PROTECT, null=True, blank=True)
 
 
 class Vote(models.Model):
