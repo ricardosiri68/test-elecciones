@@ -5,6 +5,7 @@ from voting.models import Election, VoteType
 
 
 def index(request):
+    """Render the main view for the election results."""
     election = _published_election()
     context = {'election': election}
 
