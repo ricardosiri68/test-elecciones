@@ -80,9 +80,11 @@ class ElectionAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def close_election_link(self, election):
+        close_message = '¿Estás seguro de que deseas finalizar esta elección?'
         if election.is_open:
             return format_html(
-                '<a class="button" href="{}">Cerrar elección</a>',
+                '<a class="button" onclick="confirm(\'{}\')" href="{}">Cerrar elección</a>',
+                close_message,
                 reverse('admin:close_election', args=[election.id]),
             )
 
