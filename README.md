@@ -86,3 +86,21 @@ pre-commit install
 ```bash
 pytest ballot
 ```
+
+
+## Montaje con docker compose
+
+Con este comando podemos montar el servicio
+
+```bash
+docker-compose up -d --build
+```
+
+El servicio queda corriendo `http://localhost:8080` y podemos ver los resultados de una eleccion
+cuando esta ya finalizó en [http://localhost:8080/resultados]
+
+Con este otro podemos ejecutar las pruebas con `pytest`:
+
+```bash
+docker-compose run --entrypoint poetry ballot.app run pytest -v ballot
+```

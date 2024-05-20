@@ -42,6 +42,9 @@ class Election(models.Model):
     published = models.BooleanField(default=True)
     date = models.DateField()
 
+    def __str__(self):
+        return self.date.strftime('%d %b %Y')
+
 
 class VoteType(models.TextChoices):
 

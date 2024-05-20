@@ -111,4 +111,4 @@ class ResultAdmin(admin.ModelAdmin):
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
-    pass
+    list_display = 'election', 'vote_type', 'party'
