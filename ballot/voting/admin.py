@@ -3,7 +3,8 @@ from django.urls import path, reverse
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 
-from voting.models import Voter, PoliticalParty, Election, Result
+from voting.models import Voter, PoliticalParty, Election, Result, Vote
+from voting.utils import close_election
 
 
 @admin.register(Voter)
@@ -64,11 +65,50 @@ class PoliticalPartyAdmin(admin.ModelAdmin):
 
 @admin.register(Election)
 class ElectionAdmin(admin.ModelAdmin):
-    list_display = ('date', 'is_open', 'published')
+    list_display = ('date', 'is_open', 'published', 'close_election_link')
     search_fields = ('date', 'is_open')
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                '<int:election_id>/close_election/',
+                self.admin_site.admin_view(self.close_election),
+                name='close_election',
+            ),
+        ]
+        return custom_urls + urls
+
+    def close_election_link(self, election):
+        if election.is_open:
+            return format_html(
+                '<a class="button" href="{}">Cerrar elección</a>',
+                reverse('admin:close_election', args=[election.id]),
+            )
+
+        return 'Ya esta cerrada'
+
+    def close_election(self, request, election_id):
+        election = Election.objects.get(id=election_id)
+
+        if election and election.is_open:
+            close_election(election)
+            self.message_user(
+                request,
+                format_html('La eleccion se ha cerrqado'),
+            )
+        else:
+            self.message_user(request, 'La eleccion ya se encuentra cerrada', level='error')
+
+        return HttpResponseRedirect('/admin/voting/election')
 
 
 @admin.register(Result)
 class ResultAdmin(admin.ModelAdmin):
     list_display = ('election', 'vote_type', 'party', 'percentage', 'votes')
     search_fields = ('vote_type',)
+
+
+@admin.register(Vote)
+class VoteAdmin(admin.ModelAdmin):
+    pass

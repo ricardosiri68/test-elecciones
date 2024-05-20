@@ -48,6 +48,17 @@ astroid = ["astroid (>=1,<2)", "astroid (>=2,<4)"]
 test = ["astroid (>=1,<2)", "astroid (>=2,<4)", "pytest"]
 
 [[package]]
+name = "asyncore-wsgi"
+version = "0.0.11"
+description = "Asynchronous WSGI and WebSocket server based on asyncore module"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "asyncore-wsgi-0.0.11.tar.gz", hash = "sha256:5a8f999715ac4222c7a3d4cfa427535ac2dc9adf7e18d1c7e511924864133e16"},
+    {file = "asyncore_wsgi-0.0.11-py3-none-any.whl", hash = "sha256:16cc499992d23adf3ad27f5e9a226c3212e78490aab6ea92d9167f2f1acbd6f1"},
+]
+
+[[package]]
 name = "black"
 version = "22.1.0"
 description = "The uncompromising code formatter."
@@ -106,6 +117,17 @@ files = [
 [package.dependencies]
 black = "22.1.0"
 flake8 = ">=3.8,<5.0.0"
+
+[[package]]
+name = "bottle"
+version = "0.12.25"
+description = "Fast and simple WSGI-framework for small web-applications."
+optional = false
+python-versions = "*"
+files = [
+    {file = "bottle-0.12.25-py3-none-any.whl", hash = "sha256:d6f15f9d422670b7c073d63bd8d287b135388da187a0f3e3c19293626ce034ea"},
+    {file = "bottle-0.12.25.tar.gz", hash = "sha256:e1a9c94970ae6d710b3fb4526294dfeb86f2cb4a81eff3a4b98dc40fb0e5e021"},
+]
 
 [[package]]
 name = "cfgv"
@@ -1069,6 +1091,21 @@ files = [
 ]
 
 [[package]]
+name = "web-pdb"
+version = "1.6.2"
+description = "Web interface for Python's built-in PDB debugger"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "web-pdb-1.6.2.tar.gz", hash = "sha256:f077221439fe547cf94c0e092afe0afcb5b6c12e8f18e76840e5cf54a9137deb"},
+    {file = "web_pdb-1.6.2-py3-none-any.whl", hash = "sha256:93d7e307e0e41ea316c7f570f167a0a2e544f4a84163f0b5d55eaa7f92078af3"},
+]
+
+[package.dependencies]
+asyncore-wsgi = ">=0.0.11"
+bottle = ">=0.12.25"
+
+[[package]]
 name = "wrapt"
 version = "1.16.0"
 description = "Module for decorators, wrappers and monkey patching."
@@ -1150,4 +1187,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "386b2a507d9803fa2615d257cbf9f521577d2f0a0a39222899b719888db2b813"
+content-hash = "30417e82fd311ad544aca72c5fa7f9bb91a48960eb9f6d2db0d66360cae40729"

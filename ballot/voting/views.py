@@ -37,18 +37,20 @@ def results_json(request):
 
 def vote_view(request, voter_id):
     voter = get_object_or_404(Voter, id=voter_id)
+    party = None
 
     if voter.has_voted:
         return HttpResponseForbidden('You have already voted.')
 
     if request.method == 'POST':
         party_id = request.POST.get('party_id')
-        vote_type = VoteType.BLANK if party_id is None else VoteType.AFIRMATIVE
+        vote_type = VoteType.BLANK if party_id == '' else VoteType.AFIRMATIVE
+
+        if vote_type is VoteType.AFIRMATIVE:
+            party = PoliticalParty.objects.get(id=party_id) if party_id else None
 
         vote = Vote.objects.create(
-            vote_type=vote_type,
-            election=Election.objects.filter(is_open=True).first(),
-            party=PoliticalParty.objects.get(id=party_id) if party_id else None,
+            vote_type=vote_type, election=Election.objects.filter(is_open=True).first(), party=party
         )
 
         make_vote(voter, vote)
