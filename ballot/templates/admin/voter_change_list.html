@@ -1,0 +1,9 @@
+{% extends "admin/change_list.html" %}
+{% block content %}
+  <h2>Buscar votante por DNI</h2>
+  <form method="post" action="{% url 'admin:search_voter' %}">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">Buscar</button>
+  </form>
+  {{ block.super }}
+{% endblock %}

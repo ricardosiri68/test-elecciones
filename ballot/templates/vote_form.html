@@ -1,0 +1,12 @@
+<h2>Votar</h2>
+<form method="post">{% csrf_token %}
+  <label for="party_id">Opciones de votacion:</label>
+  <select name="party_id" id="party_id">
+    <option value="">Voto en blanco</option>
+    {% for party in political_parties %}
+      <option value="{{ party.id }}">{{ party.party_name }}</option>
+    {% endfor %}
+  </select>
+  <br>
+  <button type="submit">Enviar voto</button>
+</form>

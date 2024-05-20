@@ -21,6 +21,8 @@ from voting import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('resultados/', views.index, name='index'),
+    path('resultados/', views.results_view, name='index'),
     path('resultados.json/', views.results_json, name='results_json'),
+    path('vote/<int:voter_id>/', views.vote_view, name='vote'),
+    path('vote/success/', views.VoteSuccessView.as_view(), name='vote_success'),
 ]
